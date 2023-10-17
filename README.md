@@ -1,3 +1,16 @@
+# Sommaire
+- [Exploration locale en solo](#i-exploration-locale-en-solo)
+  - [Affichage d'informations sur la pile TCP/IP locale](#1-affichage-dinformations-sur-la-pile-tcpip-locale)
+  - [Modifications des informations](#2-modifications-des-informations)
+- [Exploration locale en duo](#ii-exploration-locale-en-duo)
+  - [Modification d'adresse IP](#modification-dadresse-ip)
+  - [Petit chat privé](#petit-chat-privé-🐱)
+  - [Firewall](#firewall)
+  - [Utilisation d'un des deux comme gateway](#utilisation-dun-des-deux-comme-gateway)
+- [Manipulations d'autres outils/protocoles côté client](#iii-manipulations-dautres-outilsprotocoles-côté-client)
+  - [DHCP](#1-dhcp)
+  - [DNS](#2-dns)
+- [Wireshark](#iv-wireshark)
 # I. Exploration locale en solo
 ## 1. Affichage d'informations sur la pile TCP/IP locale
 **🌞 Affichez les infos des cartes réseau de votre PC**
@@ -56,7 +69,7 @@ Paramètres > Paramètres réseau avancés > Afficher les propriétés suppléme
 **Réponse :** C'est possible de perdre l'accès car l'adresse IP est l'adresse de la machine sur le réseau local. Si l'adresse IP est changée, la machine ne sera plus reconnue sur le réseau local et donc ne pourra plus accéder à internet. Pour rester dans le même réseau, on peut modifier que le dernier octet pour rester dans le même réseau que la passerelle. Il se peut aussi que l'on ai choisi une adresse IP déjà utilisé dans le réseau.
 
 # II. Exploration locale en duo
-## 3. Modification d'adresse IP
+## Modification d'adresse IP
 **🌞 Modification de nos adresses IP en utilisant le GUI (windows)**  
 Adresse IP choisies :   10.10.10.33 et 10.10.10.34
   
@@ -92,7 +105,7 @@ Interface : 10.10.10.33
     Adresse Internet      Adresse physique      Type
      10.10.10.34          50-eb-f6-30-83-17     dynamique
 ```
-## 4. Petit chat privé 🐱
+## Petit chat privé 🐱
 
 **🌞 sur le PC serveur**  
 ```powershell
@@ -136,7 +149,7 @@ PS C:\WINDOWS\system32> netstat -a -n -b | Select-String 8888 -Context 0,1
 >   TCP    10.10.10.34:8888       0.0.0.0:0              LISTENING
    [nc.exe]
 ```
-## 5. Firewall
+## Firewall
 **🌞 Activez et configurez votre firewall**  
 - **Autoriser le ping**
 
@@ -152,7 +165,7 @@ On crée aussi 2 règles (entrant et sortant), de type port cette fois :
 
 ![Alt text](<image/règle_port1.png>) 
 ![Alt text](<image/règle_port2.png>) 
-## 6. Utilisation d'un des deux comme gateway
+## Utilisation d'un des deux comme gateway
 **🌞Tester l'accès internet depuis le PC client**   
 ```powershell
 ping 1.1.1.1
@@ -216,7 +229,7 @@ Détermination de l’itinéraire vers 10.10.10.34 avec un maximum de 30 sauts.
 Itinéraire déterminé.
 ``` 
 # III. Manipulations d'autres outils/protocoles côté client
-## 1. DHCP d'autres outils/protocoles côté client
+## 1. DHCP
 **🌞Exploration du DHCP, depuis votre PC**
 ```powershell
 ipconfig /all
