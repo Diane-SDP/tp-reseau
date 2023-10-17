@@ -4,7 +4,7 @@
   - [Modifications des informations](#2-modifications-des-informations)
 - [Exploration locale en duo](#ii-exploration-locale-en-duo)
   - [Modification d'adresse IP](#modification-dadresse-ip)
-  - [Petit chat privé](#petit-chat-privé-🐱)
+  - [Petit chat privé](#petit-chat-privé-)
   - [Firewall](#firewall)
   - [Utilisation d'un des deux comme gateway](#utilisation-dun-des-deux-comme-gateway)
 - [Manipulations d'autres outils/protocoles côté client](#iii-manipulations-dautres-outilsprotocoles-côté-client)
