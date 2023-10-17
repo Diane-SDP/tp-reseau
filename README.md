@@ -113,34 +113,45 @@ PS C:\Users\Diane\Documents\netcat-1.11> ./nc.exe -l -p 8888
 Chat ouvert aves l'autre pc 
 
 **🌞 Visualiser la connexion en cours**
+**🌞 Visualiser la connexion en cours**
 ```powershell
 netstat -a -n -b | Select-String 8888 -Context 0,1
 ```
 **Réponse :**
-a mettre  
+```powershell
+PS C:\WINDOWS\system32> netstat -a -n -b | Select-String 8888 -Context 0,1
+
+>   TCP    10.10.10.34:8888       10.10.10.33:58213      ESTABLISHED
+   [nc.exe]
+```
 
 **🌞 Pour aller un peu plus loin**
 ```powershell
 .\nc.exe -l -p 8888 -s 10.10.10.34
 ```
 **Réponse :**  
-a mettre 
+```powershell
+PS C:\WINDOWS\system32> netstat -a -n -b | Select-String 8888 -Context 0,1
+
+>   TCP    10.10.10.34:8888       0.0.0.0:0              LISTENING
+   [nc.exe]
+```
 ## 5. Firewall
 **🌞 Activez et configurez votre firewall**  
 - **Autoriser le ping**
 
 On crée 2 règles personnalisées:
 - Une pour le trafic entrant avec un ICMP de type 0
-![Alt text](<image/ping1.PNG>) 
+![Alt text](<image/ping1.png>) 
 - Une pour le trafic entrant avec un ICMP de type 8
-![Alt text](<image/ping2.PNG>) 
+![Alt text](<image/ping2.png>) 
 
 - **Autoriser le traffic sur le port qu'utilise nc**
 
 On crée aussi 2 règles (entrant et sortant), de type port cette fois : 
 
-![Alt text](<image/règle_port1.PNG>) 
-![Alt text](<image/règle_port2.PNG>) 
+![Alt text](<image/règle_port1.png>) 
+![Alt text](<image/règle_port2.png>) 
 ## 6. Utilisation d'un des deux comme gateway
 **🌞Tester l'accès internet depuis le PC client**   
 ```powershell
