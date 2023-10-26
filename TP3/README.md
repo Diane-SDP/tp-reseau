@@ -97,6 +97,7 @@ Chez marcel, ping john
 
 - Commande pour ajouter les routes statiques :
     - Pour marcel :
+    
 ```bash
 sudo ip route add 10.3.1.0/24 via 10.3.2.254 dev enp0s3
 ```
@@ -127,12 +128,83 @@ sudo systemctl restart NetworkManager
 
 ### Analyse de trames
 
+
+sudo ip neigh flush all
+
+sur routeur et marcel : sudo tcpdump not port 22
+
+sur john : ping 10.3.2.12
+
 🌞Analyse des échanges ARP
 
-| ordre | type trame  | IP source | MAC source                   | IP destination | MAC destination              |
-| ----- | ----------- | --------- | ---------------------------- | -------------- | ---------------------------- |
-| 1     | Requête ARP | x         | `john` `08:00:27:42:4a:6f`   | x              | Broadcast `FF:FF:FF:FF:FF`   |
-| 2     | Réponse ARP | x         | `routeur` `08:00:27:e7:0e:1a`| x              | `john` `08:00:27:42:4a:6f`   |
-| ...   | ...         | ...       | ...                          |                |                              |
-| ?     | Ping        | ?         | ?                            | ?              | ?                            |
-| ?     | Pong        | ?         | ?                            | ?              | ?                            |
+| ordre | type trame  | IP source           | MAC source                   | IP destination      | MAC destination              |
+| ----- | ----------- | ------------------- | ---------------------------- | ------------------- | ---------------------------- |
+| 1     | Requête ARP | x                   | `john` `08:00:27:42:4a:6f`   | x                   | Broadcast `FF:FF:FF:FF:FF`   |
+| 2     | Réponse ARP | x                   | `routeur` `08:00:27:e7:0e:1a`| x                   | `john` `08:00:27:42:4a:6f`   |
+| 3     | Ping        | `john` `10.3.1.11`  | `john` `08:00:27:42:4a:6f`   | `marcel` `10.3.2.12`| `routeur` `08:00:27:e7:0e:1a`|
+| 3     | Ping        | `john` `10.3.1.11`  | `routeur``08:00:27:fb:fe:b0` | `marcel` `10.3.2.12`| `marcel` `08:00:27:9e:58:94` |
+| 4     | Requête ARP | x                   | `marcel` `08:00:27:9e:58:94` | x                   | Broadcast `FF:FF:FF:FF:FF`   |
+| 5     | Réponse ARP | x                   | `routeur` `08:00:27:fb:fe:b0`| x                   | `marcel` `08:00:27:9e:58:94` |
+| 6     | Pong        | `marcel` `10.3.2.12`| `marcel` `08:00:27:9e:58:94` | `john` `10.3.1.11`  | `routeur` `08:00:27:fb:fe:b0`|
+| 6     | Pong        | `marcel` `10.3.2.12`| `routeur` `08:00:27:e7:0e:1a`| `john` `10.3.1.11`  | `john` `08:00:27:42:4a:6f`   |
+
+### Accès internet
+
+🌞Donnez un accès internet à vos machines - config routeur
+
+Vérification de l'accès à Internet (depuis routeur) :
+
+```bash
+[diane@localhost ~]$ ping 8.8.8.8
+PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
+64 bytes from 8.8.8.8: icmp_seq=1 ttl=114 time=21.6 ms
+64 bytes from 8.8.8.8: icmp_seq=2 ttl=114 time=19.1 ms
+^C
+--- 8.8.8.8 ping statistics ---
+2 packets transmitted, 2 received, 0% packet loss, time 1003ms
+```
+
+Autoriser le routage des paquets sur internet :
+
+Ajouter une route par defaut :
+
+```bash
+[diane@localhost ~]$ sudo firewall-cmd --add-masquerade --permanent
+success
+[diane@localhost ~]$ sudo firewall-cmd --reload
+success
+```
+
+🌞Donnez un accès internet à vos machines - config clients
+
+```bash
+# Ajouter route par défaut
+
+[diane@localhost ~]$ sudo nano /etc/sysconfig/network
+# Ajouter GATEWAY=10.3.1.254 (chez john) de GATEWAY=10.3.2.254 (chez marcel)
+[diane@localhost ~]$ sudo systemctl restart NetworkManager
+
+# Ajouter l'adresse d'un serveur DNS qu'ils peuvent utiliser
+[diane@localhost ~]$ sudo nano /etc/resolv.conf
+# Ajouter nameserver 1.1.1.1 (chez john ET marcel)
+```
+
+Vérification de l'accès à Internet (depuis marcel et john) :
+
+```bash
+[diane@localhost ~]$ ping google.com
+PING google.com (142.250.75.238) 56(84) bytes of data.
+64 bytes from par10s41-in-f14.1e100.net (142.250.75.238): icmp_seq=1 ttl=116 time=30.5 ms
+64 bytes from par10s41-in-f14.1e100.net (142.250.75.238): icmp_seq=2 ttl=116 time=27.4 ms
+64 bytes from par10s41-in-f14.1e100.net (142.250.75.238): icmp_seq=3 ttl=116 time=28.1 ms
+^C
+--- google.com ping statistics ---
+3 packets transmitted, 3 received, 0% packet loss, time 2004ms
+```
+
+| ordre | type trame  | IP source           | MAC source                   | IP destination      | MAC destination              |
+| ----- | ----------- | ------------------- | ---------------------------- | ------------------- | ---------------------------- |
+| 1     | Ping        | `john` `10.3.1.11`  | `john` `08:00:27:42:4a:6f`   | `marcel` `10.3.2.12`| `routeur` `08:00:27:e7:0e:1a`|
+| 2     | Ping        | `john` `10.3.1.11`  | `routeur` `08:00:27:fb:fe:b0`| `marcel` `10.3.2.12`| `marcel` `08:00:27:9e:58:94` |
+| 3     | Pong        | `marcel` `10.3.2.12`| `marcel` `08:00:27:9e:58:94` | `john` `10.3.1.11`  | `routeur` `08:00:27:fb:fe:b0`|
+| 4     | Pong        | `marcel` `10.3.2.12`| `routeur` `08:00:27:e7:0e:1a`| `john` `10.3.1.11`  | `john` `08:00:27:42:4a:6f`   |
