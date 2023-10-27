@@ -181,12 +181,16 @@ success
 # Ajouter route par défaut
 
 [diane@localhost ~]$ sudo nano /etc/sysconfig/network
-# Ajouter GATEWAY=10.3.1.254 (chez john) de GATEWAY=10.3.2.254 (chez marcel)
+# Dans le fichier
+GATEWAY=10.3.1.254 #(chez john)
+GATEWAY=10.3.2.254 #(chez marcel)
 [diane@localhost ~]$ sudo systemctl restart NetworkManager
 
 # Ajouter l'adresse d'un serveur DNS qu'ils peuvent utiliser
 [diane@localhost ~]$ sudo nano /etc/resolv.conf
-# Ajouter nameserver 1.1.1.1 (chez john ET marcel)
+# Dans le fichier
+nameserver 1.1.1.1 #(chez john ET marcel)
+[diane@localhost ~]$ sudo systemctl restart NetworkManager
 ```
 
 Vérification de l'accès à Internet (depuis marcel et john) :
@@ -201,6 +205,8 @@ PING google.com (142.250.75.238) 56(84) bytes of data.
 --- google.com ping statistics ---
 3 packets transmitted, 3 received, 0% packet loss, time 2004ms
 ```
+
+🌞Analyse de trames
 
 | ordre | type trame  | IP source           | MAC source                   | IP destination      | MAC destination              |
 | ----- | ----------- | ------------------- | ---------------------------- | ------------------- | ---------------------------- |
