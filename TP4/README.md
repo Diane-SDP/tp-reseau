@@ -77,7 +77,7 @@ traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets
 option domain-name     "tp4.dhcp";
 # active le dhcp dans ce lan spécifique
 authoritative;
-# specify network address and subnetmask
+# adresse réseau et masque de sous réseau
 subnet 10.4.1.0 netmask 255.255.255.0 {
     # IP doit etre entre 10.4.1.137 et 10.4.1.237
     range dynamic-bootp 10.4.1.137 10.4.1.237;
