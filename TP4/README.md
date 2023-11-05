@@ -176,6 +176,27 @@ rtt min/avg/max/mdev = 0.349/0.378/0.407/0.029 ms
 
 🌞 Bail DHCP serveur
 
+```bash
+[diane@dhcp ~]$ cat /var/lib/dhcpd/dhcpd.leases
+# The format of this file is documented in the dhcpd.leases(5) manual page.
+# This lease file was written by isc-dhcp-4.4.2b1
+
+# authoring-byte-order entry is generated, DO NOT DELETE
+authoring-byte-order little-endian;
+
+lease 10.4.1.137 {
+  starts 0 2023/11/05 18:46:37;
+  ends 1 2023/11/06 00:46:37;
+  tstp 1 2023/11/06 00:46:37;
+  cltt 0 2023/11/05 18:46:37;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 08:00:27:de:36:da;
+  uid "\001\010\000'\3366\332";
+}
+server-duid "\000\001\000\001,\332\237\214\010\000'%\270\250";
+```
 
 ### Options DHCP
 
@@ -227,7 +248,25 @@ default via 10.4.1.254 dev enp0s3 proto dhcp src 10.4.1.138 metric 100
 - la durée de votre bail DHCP est bien de 6 heures
 
 ```bash
-[diane@localhost ~]$ nmcli con show enp0s3
+[diane@dhcp ~]$ cat /var/lib/dhcpd/dhcpd.leases
+# The format of this file is documented in the dhcpd.leases(5) manual page.
+# This lease file was written by isc-dhcp-4.4.2b1
+
+# authoring-byte-order entry is generated, DO NOT DELETE
+authoring-byte-order little-endian;
+
+lease 10.4.1.137 {
+  starts 0 2023/11/05 18:46:37;
+  ends 1 2023/11/06 00:46:37;  # Youpi ça fait 6h
+  tstp 1 2023/11/06 00:46:37;
+  cltt 0 2023/11/05 18:46:37;
+  binding state active;
+  next binding state free;
+  rewind binding state free;
+  hardware ethernet 08:00:27:de:36:da;
+  uid "\001\010\000'\3366\332";
+}
+server-duid "\000\001\000\001,\332\237\214\010\000'%\270\250";
 ```
 
 - prouvez que vous avez un accès Internet après cet échange DHCP
@@ -254,3 +293,11 @@ rtt min/avg/max/mdev = 27.813/29.147/30.742/1.209 ms
 ```
 
 🌞 Capture Wireshark
+
+```bash
+[diane@localhost ~]$ sudo tcpdump -i enp0s3 -w tp4_dhcp_server.pcapng not port 22
+```
+
+```powershell
+PS C:\Users\Diane> scp diane@10.4.1.253:/home/diane/tp4_dhcp_server.pcapng ./
+```
