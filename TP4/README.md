@@ -1,5 +1,11 @@
 # I. DHCP Client
 
+🌞 Déterminer
+
+- l'adresse du serveur DHCP
+- l'heure exacte à laquelle vous avez obtenu votre bail DHCP
+- l'heure exacte à laquelle il va expirer
+
 ```bash
 PS C:\Users\Diane> ipconfig /all
 Carte réseau sans fil Wi-Fi :
@@ -8,11 +14,14 @@ Carte réseau sans fil Wi-Fi :
    Bail expirant. . . . . . . . . . . . . : samedi 28 octobre 2023 08:42:12
    Serveur DHCP . . . . . . . . . . . . . : 10.33.79.254
 ```
-🌞 Analyser la capture Wireshark
 
-parmi ces 4 trames, laquelle contient les informations proposées au client ?
+🌞 Analyser la capture Wireshark (tcp_dhcp_client.pcapng)
+
+Parmi ces 4 trames, laquelle contient les informations proposées au client ?
 
 *Réponse :*  DHCP Offer
+
+# II. Serveur DHCP
 
 🌞 Preuve de mise en place
 
@@ -52,9 +61,14 @@ traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets
 
 🌞 Serveur DHCP
 
+**Installation du logiciel**
+
 ```bash
 [diane@dhcp ~]$ dnf -y install dhcp-server
 ```
+
+**Configuration du dhcp**
+
 ```bash
 [diane@dhcp ~]$ sudo nano /etc/dhcp/dhcpd.conf
 [diane@dhcp ~]$ sudo cat /etc/dhcp/dhcpd.conf
@@ -72,6 +86,8 @@ subnet 10.4.1.0 netmask 255.255.255.0 {
 }
 ```
 
+**Démarrage du serveur DHCP**
+
 ```bash
 [diane@dhcp ~]$ sudo systemctl enable --now dhcpd
 Created symlink /etc/systemd/system/multi-user.target.wants/dhcpd.service → /usr/lib/systemd/system/dhcpd.service.
@@ -81,12 +97,16 @@ success
 success
 ```
 
+**Vérification de l'état du serveur DHCP**
+
 ```bash
 [diane@dhcp ~]$ sudo systemctl status dhcpd
 ● dhcpd.service - DHCPv4 Server Daemon
      Loaded: loaded (/usr/lib/systemd/system/dhcpd.service; enabled; preset>
      Active: active (running) since Fri 2023-10-27 15:03:30 CEST; 4min 49s >
 ```
+
+### Client DHCP
 
 🌞 Test !
 
@@ -124,11 +144,16 @@ ONBOOT=yes
 
 - node1.tp4.b1 a enregistré un bail DHCP
    - **déterminer la date exacte de création du bail**
+
       vendredi 27 octobre 2023 15:19:21 GMT+02:00 DST
    - **déterminer la date exacte d'expiration**
+
       vendredi 27 octobre 2023 16:04:22 GMT+02:00 DST
    - **déterminer l'adresse IP du serveur DHCP**
+
       dhcp_server_identifier = 10.4.1.253
+
+- Vous pouvez ping router.tp4.b1 et node2.tp4.b1 grâce à cette nouvelle IP récupérée
 
 ```bash
 [diane@localhost ~]$ ping 10.4.1.254
@@ -152,7 +177,7 @@ rtt min/avg/max/mdev = 0.349/0.378/0.407/0.029 ms
 🌞 Bail DHCP serveur
 
 
-Options DHCP
+### Options DHCP
 
 🌞 Nouvelle conf !
 
@@ -180,6 +205,7 @@ subnet 10.4.1.0 netmask 255.255.255.0 {
 [diane@dhcp ~]$ sudo systemctl restart dhcpd
 
 ```
+
 🌞 Test !
 
 - vous avez enregistré l'adresse d'un serveur DNS
@@ -226,3 +252,5 @@ PING youtube.com (172.217.18.206) 56(84) bytes of data.
 3 packets transmitted, 3 received, 0% packet loss, time 2004ms
 rtt min/avg/max/mdev = 27.813/29.147/30.742/1.209 ms
 ```
+
+🌞 Capture Wireshark
