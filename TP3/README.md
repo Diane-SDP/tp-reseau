@@ -118,7 +118,7 @@ sudo ip route add 10.3.2.0/24 via 10.3.1.254 dev enp0s3
 ```
 
 ```bash
-[slayz@localhost ~]$ sudo nano /etc/sysconfig/network-scripts/route-enp0s3
+[diane@localhost ~]$ sudo nano /etc/sysconfig/network-scripts/route-enp0s3
 
 10.3.2.0/24 via 10.3.1.254 dev enp0s3
 
