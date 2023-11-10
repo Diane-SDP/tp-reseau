@@ -9,25 +9,35 @@ Protocol : UDP
 Mon ip et mon port : 10.33.70.185:57400  
 Ip du serveur et son port : 66.22.197.137:50001
 
+--> Wireshark [discord](tp5_service1.pcapng)
+
 - Ark  
 Protocol : UDP  
 Mon ip et mon port : 10.33.70.185:63875  
 Ip du serveur et son port : 162.159.133.233:443
+
+--> Wireshark [ark](tp5_service2.pcapng)
 
 - Steam  
 Protocol : TCP  
 Mon ip et mon port : 10.33.70.185:55816  
 Ip du serveur et son port : 185.25.182.4:443
 
+--> Wireshark [steam](tp5_service3.pcapng)
+
 - Whatsapp  
 Protocol : UDP  
 Mon ip et mon port : 10.33.70.185:52887  
 Ip distante et son port : 92.88.3.32:3478
 
+--> Wireshark [whatsapp](tp5_service4.pcapng)
+
 - Youtube
 Protocol : UDP
 Mon ip et mon port : 10.33.70.185:63608
 Ip du serveur et son port : 77.136.192.79:443
+
+--> Wireshark [youtube](tp5_service5.pcapng)
 
 🌞 Demandez l'avis à votre OS
 
