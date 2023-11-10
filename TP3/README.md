@@ -128,7 +128,6 @@ sudo systemctl restart NetworkManager
 
 ### Analyse de trames
 
-
 sudo ip neigh flush all
 
 sur routeur et marcel : sudo tcpdump not port 22
