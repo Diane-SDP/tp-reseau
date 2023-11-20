@@ -60,11 +60,10 @@ traceroute to 8.8.8.8 (8.8.8.8), 30 hops max, 60 byte packets
 ```
 
 🌞 Serveur DHCP
-
 **Installation du logiciel**
 
 ```bash
-[diane@dhcp ~]$ dnf -y install dhcp-server
+[diane@dhcp ~]$ sudo dnf -y install dhcp-server
 ```
 
 **Configuration du dhcp**
