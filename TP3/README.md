@@ -1,4 +1,4 @@
-# <div align='center'>TP3 : On va router des trucs
+# TP3 : On va router des trucs
 
 ## ARP
 
@@ -128,11 +128,13 @@ sudo systemctl restart NetworkManager
 
 ### Analyse de trames
 
+```bash
 sudo ip neigh flush all
 
 sur routeur et marcel : sudo tcpdump not port 22
 
 sur john : ping 10.3.2.12
+```
 
 🌞Analyse des échanges ARP
 
@@ -141,11 +143,11 @@ sur john : ping 10.3.2.12
 | 1     | Requête ARP | x                   | `john` `08:00:27:42:4a:6f`   | x                   | Broadcast `FF:FF:FF:FF:FF`   |
 | 2     | Réponse ARP | x                   | `routeur` `08:00:27:e7:0e:1a`| x                   | `john` `08:00:27:42:4a:6f`   |
 | 3     | Ping        | `john` `10.3.1.11`  | `john` `08:00:27:42:4a:6f`   | `marcel` `10.3.2.12`| `routeur` `08:00:27:e7:0e:1a`|
-| 3     | Ping        | `john` `10.3.1.11`  | `routeur``08:00:27:fb:fe:b0` | `marcel` `10.3.2.12`| `marcel` `08:00:27:9e:58:94` |
-| 4     | Requête ARP | x                   | `marcel` `08:00:27:9e:58:94` | x                   | Broadcast `FF:FF:FF:FF:FF`   |
-| 5     | Réponse ARP | x                   | `routeur` `08:00:27:fb:fe:b0`| x                   | `marcel` `08:00:27:9e:58:94` |
-| 6     | Pong        | `marcel` `10.3.2.12`| `marcel` `08:00:27:9e:58:94` | `john` `10.3.1.11`  | `routeur` `08:00:27:fb:fe:b0`|
-| 6     | Pong        | `marcel` `10.3.2.12`| `routeur` `08:00:27:e7:0e:1a`| `john` `10.3.1.11`  | `john` `08:00:27:42:4a:6f`   |
+| 4     | Ping        | `john` `10.3.1.11`  | `routeur` `08:00:27:fb:fe:b0` | `marcel` `10.3.2.12`| `marcel` `08:00:27:9e:58:94` |
+| 5     | Requête ARP | x                   | `marcel` `08:00:27:9e:58:94` | x                   | Broadcast `FF:FF:FF:FF:FF`   |
+| 6     | Réponse ARP | x                   | `routeur` `08:00:27:fb:fe:b0`| x                   | `marcel` `08:00:27:9e:58:94` |
+| 7     | Pong        | `marcel` `10.3.2.12`| `marcel` `08:00:27:9e:58:94` | `john` `10.3.1.11`  | `routeur` `08:00:27:fb:fe:b0`|
+| 8     | Pong        | `marcel` `10.3.2.12`| `routeur` `08:00:27:e7:0e:1a`| `john` `10.3.1.11`  | `john` `08:00:27:42:4a:6f`   |
 
 ### Accès internet
 
@@ -164,8 +166,6 @@ PING 8.8.8.8 (8.8.8.8) 56(84) bytes of data.
 ```
 
 Autoriser le routage des paquets sur internet :
-
-Ajouter une route par defaut :
 
 ```bash
 [diane@localhost ~]$ sudo firewall-cmd --add-masquerade --permanent
