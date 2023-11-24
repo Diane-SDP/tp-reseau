@@ -132,7 +132,6 @@ LISTEN  0       10               [::1]:53               [::]:*
 
 ```powershell
 [diane@dns ~]$ sudo firewall-cmd --add-port=53/udp --permanent
-[sudo] password for diane:
 success
 [diane@dns ~]$ sudo firewall-cmd --reload
 success

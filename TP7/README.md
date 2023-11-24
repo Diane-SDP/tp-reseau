@@ -33,6 +33,8 @@ Last login: Thu Nov 23 10:58:55 2023 from 10.7.1.1
 
 🌞 Consulter l'état actuel
 
+- vérifiez que le serveur SSH tourne actuellement sur le port 22/tcp
+
 ```powershell
 [diane@router ~]$ sudo cat /etc/ssh/sshd_config
 ...
@@ -42,4 +44,48 @@ Last login: Thu Nov 23 10:58:55 2023 from 10.7.1.1
 #
 #Port 22
 ...
+```
+
+- vérifiez que le serveur SSH est disponible actuellement sur TOUTES les IPs de la machine
+
+```powershell
+[diane@router ~]$ ss -altnp
+State   Recv-Q  Send-Q   Local Address:Port     Peer Address:Port  Process
+LISTEN  0       128            0.0.0.0:22            0.0.0.0:*
+LISTEN  0       128               [::]:22               [::]:*
+```
+
+🌞 Modifier la configuration du serveur SSH
+
+```powershell
+[diane@router ~]$  sudo cat /etc/ssh/sshd_config
+# BLABLABLA
+Port 20001
+#AddressFamily any
+ListenAddress 10.7.1.254
+# BLABLABLA
+[diane@router ~]$ sudo systemctl restart sshd
+```
+
+🌞 Prouvez que le changement a pris effet
+
+```powershell
+[diane@router ~]$ ss -altnp
+State    Recv-Q   Send-Q     Local Address:Port      Peer Address:Port   Process
+LISTEN   0        128           10.7.1.254:20001          0.0.0.0:*
+```
+
+🌞 N'oubliez pas d'ouvrir ce nouveau port dans le firewall
+
+```powershell
+[diane@router ~]$ sudo firewall-cmd --add-port=20001/tcp --permanent
+success
+```
+
+🌞 Effectuer une connexion SSH sur le nouveau port
+
+```powershell
+PS C:\Users\Diane> ssh diane@router.tp6.b1 -p 20001
+diane@router.tp6.b1's password:
+Last login: Fri Nov 24 15:06:26 2023
 ```
