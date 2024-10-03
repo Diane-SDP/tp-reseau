@@ -136,3 +136,9 @@ avec un maximum de 30 sauts :
 IP Publique : 195.7.117.146
 
 ## Le requin
+
+[📁 fichier arp.pcap](./captures/arp.pcapng)
+
+[📁 fichier dns.pcap](./captures/dns.pcapng)
+
+[📁 fichier tcp.pcap](./captures/tcp.pcapng)
